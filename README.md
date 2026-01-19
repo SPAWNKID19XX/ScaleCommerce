@@ -56,5 +56,5 @@ A scalable backend for an e-commerce platform designed with a focus on performan
 ---
 
 ## How to run / Как запустить
-1. `git clone https://github.com`
+1. `git clone https://github.com/SPAWNKID19XX/ScaleCommerce.git`
 2. `docker-compose up --build`
