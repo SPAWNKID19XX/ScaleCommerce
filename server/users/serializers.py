@@ -5,13 +5,15 @@ from django.contrib.auth.password_validation import validate_password
 
 
 
+
 class UserRegistrationSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
     class Meta:
         model = CustomUser
         fields = ["id","password", "email", "first_name", "last_name", "bio"]
 
-    def validate_password(self,value):
+
+    def validate_password(self, value):
         validate_password(value)
         return value
 
