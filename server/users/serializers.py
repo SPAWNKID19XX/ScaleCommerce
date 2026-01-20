@@ -22,3 +22,8 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
             **validated_data
         )
         return user
+
+class CustomUserViewSetSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ["id", "first_name", "last_name", "email", "bio"]
