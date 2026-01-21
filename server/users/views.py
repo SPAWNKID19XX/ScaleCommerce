@@ -13,4 +13,5 @@ class UserRegistrationView(viewsets.generics.CreateAPIView):
 class UsersViewSet(viewsets.ModelViewSet):
     queryset = CustomUser.objects.all()
     serializer_class = CustomUserViewSetSerializer
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.IsAdminUser]
+
