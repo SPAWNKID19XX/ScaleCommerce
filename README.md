@@ -31,6 +31,38 @@ A scalable backend for an e-commerce platform designed with a focus on performan
 3.  **Performance Optimization:** Solved N+1 problems, implemented caching for hot data, and Service Layer pattern.
 4.  **Advanced Filtering:** Complex search and filtering systems.
 
+## How to run
+### Installation and Setup 
+
+Follow these steps to get the project up and running:
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com
+   cd ScaleCommerce
+
+2. **Apply migrations:**
+   ```bash
+   python manage.py makemigrations
+   python manage.py migrate
+
+3. **Create a superuser:**
+   ```bash
+   python manage.py createsuperuser
+
+---
+# Test Data Generation
+If you need to populate the database with random data, use the following custom management commands:
+
+1. **Create 10 test users:**
+   ```bash
+   python manage.py new_users
+All generated users have the password: admin
+
+2. **Create 500 test products:**
+   ```bash
+   python manage.py new_products
+
 ---
 
 <a name="russian-version"></a>
@@ -55,6 +87,35 @@ A scalable backend for an e-commerce platform designed with a focus on performan
 
 ---
 
-## How to run / Как запустить
-1. `git clone https://github.com/SPAWNKID19XX/ScaleCommerce.git`
-2. `docker-compose up --build`
+##  Как запустить
+### Инструкция по запуску
+
+
+Выполните следующие шаги для установки и запуска проекта:
+
+1. **Клонируйте репозиторий:**
+   ```bash
+   git clone https://github.com/SPAWNKID19XX/ScaleCommerce.git
+   cd ScaleCommerce
+
+2. **Выполните миграции:**
+   ```bash
+   python manage.py makemigrations
+   python manage.py migrate
+
+3. **Создайте администратора:**
+   ```bash
+   python manage.py createsuperuser
+
+---
+# Наполнение тестовыми данными
+Если вам нужно заполнить базу данных тестовыми данными, воспользуйтесь следующими командами:
+1. **Создать 10 пользователей:**
+   ```bash
+   python manage.py new_users
+У всех созданных пользователей пароль: admin
+
+2. **Создать 500 товаров:**
+   ```bash
+   python manage.py new_products
+
