@@ -44,3 +44,4 @@ class StatProductAPIView(APIView):
         print(queryset)
 
         return Response(queryset)
+
