@@ -71,6 +71,103 @@ All generated users have the password: admin
 4. **Create  test order_items for each of order:**
    ```bash
    python manage.py new_order_item
+   
+# 🚀 Vortex Marketplace API Documentation (v1.0)
+
+- **BASE URL**: http://localhost:8000/
+- **Data Format**: JSON
+- **Authentication**: JWT (Bearer Token)
+
+## 🔐 1. Authentication (Users)
+
+| Метод | Эндпоинт                                  | Описание                              |
+| :--- |:------------------------------------------|:--------------------------------------|
+| GET  | users/api/v1/                             | Users list(just for admin).           |
+| POST | users/api/v1/sign-up/                     | SignUp new user                       |
+| POST | users/api/v1/token/                       | Login (get Access and Refresh tokens) |
+| POST | users/api/v1/token/refresh/               | Refresh Access token                  |
+| POST | users/api/v1/token/verify/                | Validation token                      |
+
+## 📦 2. Products (Products)
+### 📦 Product Management (Products)
+
+| Method | Endpoint                | Description                      | Access                   |
+| :--- |:------------------------|:------------------------------|:-------------------------|
+| **GET** | `products/api/v1/`      | Activ products list (filtred) | AlowAny                  |
+| **POST** | `products/api/v1/`      | Create ne product             | Just authenticated users |
+| **GET** | `products/api/v1/{id}/` | Product detail (count_viewed) | AlowAny                  |
+| **PUT/PATCH** | `products/api/v1/{id}/` | Update product                | Owner                    |
+| **DELETE** | `products/api/v1/{id}/` | Delete product                | Owner                    |
+
+### Peculiarities of POST requests:
+When creating a product, you need to pass the category_id. The seller field will be filled in automatically.
+```json
+{
+        "id": 1,
+        "name": "article",
+        "brand": "leave",
+        "price": "6.21",
+        "description": "And north ago least memory bed individual.",
+        "category": {
+            "id": 9,
+            "name": "beauty_health"
+        },
+        "seller": {
+            "first_name": "Kara",
+            "last_name": "Sexton",
+            "email": "matthewwade@example.com"
+        },
+        "stock": 87,
+        "is_active": true,
+        "created_at": "2026-01-20T22:20:27.552966Z",
+        "count_viewed": 0
+    }
+```
+## 🛒 3. Orders (Orders)
+
+| Method | Endpoint                | Description                      | Access |
+| :--- |:-----------------| :--- | :--- |
+| **GET** | `orders/api/v1/` | Current user's order history | Logged in |
+| **POST** | `orders/api/v1/` | **Create an Order** (Atomic Transaction) | Logged in |
+
+### Order creation format (Nested JSON):
+When creating an order, you must provide a list of products and their quantity.
+
+```json
+{
+  "order_item": [
+    {
+      "product": 1, 
+      "quantity": 2
+    },
+    {
+      "product": 5, 
+      "quantity": 1
+    }
+  ]
+}
+```
+
+## 📊 4. Analytics (Seller Dashboard)
+| Method | Endpoint                | Description                      | Access        |
+| :--- |:--------------------------------| :--- |:--------------|
+| **GET** | `products/api/v1/seller-stats/` | Statistics: revenue, views, top products | Authenticated |
+```json
+
+{
+    "total_views": 438,
+    "avg_views": 0.2255406797116375,
+    "total_products": 1942,
+    "totat_sold": 492013.34
+}
+```
+
+## 🛠 Backend technical features (for interviews):
+1. Race Condition Protection: Product write-offs are protected via select_for_update.
+2. Database Optimization: All lists use select_related and prefetch_related (N+1 issue resolved).
+3. High-load ready: Bulk operations are performed via bulk_create and bulk_update.
+4. Price Consistency: Price history is saved automatically when the price field is changed.
+
 ---
 
 <a name="russian-version"></a>
@@ -135,4 +232,86 @@ All generated users have the password: admin
 4. **Создать  order_items для каждого заказа:**
    ```bash
    python manage.py new_order_item
+   
 
+# 🚀 Vortex Marketplace API Documentation (v1.0)
+
+- **Базовый URL**: http://localhost:8000/
+- **Формат данных**: JSON
+- **Авторизация**: JWT (Bearer Token)
+
+## 🔐 1. Аутентификация (Users)
+
+| Метод | Эндпоинт                                  | Описание                                   |
+| :--- |:------------------------------------------|:-------------------------------------------|
+| GET  | users/api/v1/                             | Список пользователей(админ).               |
+| POST | users/api/v1/sign-up/                     | Регистрация нового пользователя            |
+| POST | users/api/v1/token/                       | Логин (получение Access и Refresh токенов) |
+| POST | users/api/v1/token/refresh/               | Обновление Access токена                   |
+| POST | users/api/v1/token/verify/                | Проверка валидности токена                 |
+
+## 📦 2. Товары (Products)
+### 📦 Управление товарами (Products)
+
+| Метод | Эндпоинт                | Описание | Доступ |
+| :--- |:------------------------| :--- | :--- |
+| **GET** | `products/api/v1/`      | Список активных товаров (с фильтрацией) | Всем |
+| **POST** | `products/api/v1/`      | Создание нового товара | Только Seller |
+| **GET** | `products/api/v1/{id}/` | Детали товара (+1 к просмотру) | Всем |
+| **PUT/PATCH** | `products/api/v1/{id}/` | Редактирование товара | Только Владелец |
+| **DELETE** | `products/api/v1/{id}/` | Удаление товара | Только Владелец |
+
+### Особенность POST запроса:
+При создании товара нужно передавать category_id. Поле seller заполнится автоматически.
+```json
+{
+  "name": "iPhone 15",
+  "category_id": 5,
+  "price": "999.00",
+  "stock": 10
+}
+```
+## 🛒 3. Заказы (Orders)
+
+| Метод | Эндпоинт         | Описание | Доступ |
+| :--- |:-----------------| :--- | :--- |
+| **GET** | `orders/api/v1/` | История заказов текущего пользователя | Авторизован |
+| **POST** | `orders/api/v1/` | **Создание заказа** (Атомарная транзакция) | Авторизован |
+
+### Формат создания заказа (Nested JSON):
+При создании заказа необходимо передать список товаров и их количество.
+
+```json
+{
+  "order_item": [
+    {
+      "product": 1, 
+      "quantity": 2
+    },
+    {
+      "product": 5, 
+      "quantity": 1
+    }
+  ]
+}
+```
+
+## 📊 4. Аналитика (Seller Dashboard)
+| Метод | Эндпоинт                        | Описание | Доступ |
+| :--- |:--------------------------------| :--- | :--- |
+| **GET** | `products/api/v1/seller-stats/` | Статистика: выручка, просмотры, топ-товары | Только Seller |
+```json
+
+{
+  "total_products": 142,
+  "total_views": 8540,
+  "avg_views": 60.1,
+  "total_revenue": "1250450.50"
+}
+```
+
+## 🛠 Технические особенности бэкенда (для собеседований):
+1. Race Condition Protection: Списание товара защищено через select_for_update.
+2. Database Optimization: Все списки используют select_related и prefetch_related (решена проблема N+1).
+3. High-load ready: Массовые операции выполняются через bulk_create и bulk_update.
+4. Price Consistency: История цен сохраняется автоматически при изменении поля price.
