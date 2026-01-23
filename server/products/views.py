@@ -40,8 +40,5 @@ class StatProductAPIView(APIView):
             total_products=Count('id'),
             totat_sold=Sum(F('product__price') * F('product__quantity')),
         )
-
-        print(queryset)
-
         return Response(queryset)
 
