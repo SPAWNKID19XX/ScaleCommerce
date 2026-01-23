@@ -63,6 +63,14 @@ All generated users have the password: admin
    ```bash
    python manage.py new_products
 
+3. **Create 5000 test orders:**
+   ```bash
+   python manage.py new_orders
+
+
+4. **Create  test order_items for each of order:**
+   ```bash
+   python manage.py new_order_item
 ---
 
 <a name="russian-version"></a>
@@ -118,4 +126,13 @@ All generated users have the password: admin
 2. **Создать 500 товаров:**
    ```bash
    python manage.py new_products
+   
+3. **Создать 5000 заказов:**
+   ```bash
+   python manage.py new_orders
+
+
+4. **Создать  order_items для каждого заказа:**
+   ```bash
+   python manage.py new_order_item
 
