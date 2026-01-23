@@ -4,7 +4,7 @@ from django.db import transaction
 from rest_framework import serializers
 
 from .models import Order, OrderItem
-from ..products.models import Product
+from products.models import Product
 
 
 class OrderItemSerializer(serializers.ModelSerializer):
@@ -16,18 +16,18 @@ class OrderItemSerializer(serializers.ModelSerializer):
 
 class OrderSerializer(serializers.ModelSerializer):
     total_amount = serializers.DecimalField(max_digits=10, decimal_places=2)
-    order_item=OrderItemSerializer(many=True)
+    order_items=OrderItemSerializer(many=True,read_only=True)
     class Meta:
         model = Order
-        fields = ('id', 'user', 'order_item', "total_amount", 'status')
+        fields = ('id', 'user', 'order_items',"total_amount", 'status')
 
     def create(self, validated_data):
-        order_item = validated_data.pop('order_item')
+        order_items = validated_data.pop('order_items')
         total = 0
         order_item_to_create = []
 
 
-        order_quantity = {item['product'].id : item['quantity'] for item in order_item}
+        order_quantity = {item['product'].id : item['quantity'] for item in order_items}
         products = Product.objects.filter(id__in=order_quantity.keys()).select_for_update()
 
         with transaction.atomic():
